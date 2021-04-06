@@ -1,0 +1,149 @@
+Bootstrap: debootstrap
+MirrorURL: http://archive.ubuntu.com/ubuntu/
+OSVersion: bionic
+Include: software-properties-common
+%labels
+
+    APPLICATION_NAME Ubuntu LTS + kernsuite + CubiCal + PyBDSF + Montage
+    OS_VERSION 18.04 
+
+    SYSTEM_NAME iLifu
+    SYSTEM_SINGULARITY_VERSION 2.6
+    SYSTEM_URL http://www.ilifu.ac.za
+
+    AUTHOR_NAME Jeremy Smith
+    AUTHOR_EMAIL jeremy@idia.ac.za
+
+%environment
+
+    export LC_ALL=C
+    export SOFTWARE_PATH=/opt
+    export PATH=$SOFTWARE_PATH/Montage/bin:$PATH
+        
+
+%post
+    ##############################################################################
+    # Setting up Environment  
+    # Create Installation Directories and export paths. This is needed as part of post.
+    # %environment scriptlet does not define these paths during %post, only after.
+    mkdir -p /opt
+    export SOFTWARE_PATH=/opt
+
+    # Fix command prompt in Singularity 3.5.2
+    printf 'export PS1="\u@$SINGULARITY_NAME:\w$ "' > /.singularity.d/env/999-psvars.sh
+    ###############################################################################
+    
+    # Create Installation Directories and export paths. This is needed as part of post.
+    # %environment scriptlet does not define these paths during %post, only after.
+
+    apt-get update -y
+    apt-get install -y wget vim apt-utils git build-essential bzip2 libpng-dev
+    
+    add-apt-repository -s ppa:kernsuite/kern-6
+    apt-add-repository multiverse
+    apt-add-repository restricted
+    apt-get update
+
+    apt-get install -y 21cmfast
+    apt-get install -y aoflagger aoflagger-dev libaoflagger0
+    apt-get install -y python-attrdict python3-attrdict
+    apt-get install -y libblitz0 libblitz0-dev                                                                                                                                            
+    apt-get install -y brats
+    apt-get install -y casacore-dev casacore-doc casacore-doc casacore-tools libcasa-casa4 libcasa-casa5 libcasa-coordinates4 libcasa-coordinates5 libcasa-derivedmscal4 libcasa-derivedmscal5 libcasa-fits4 libcasa-fits5 libcasa-images4 libcasa-images5 libcasa-lattices4 libcasa-lattices5 libcasa-meas4 libcasa-meas5 libcasa-measures4 libcasa-measures5 libcasa-mirlib4 libcasa-mirlib5 libcasa-ms4 libcasa-ms5 libcasa-msfits4 libcasa-msfits5 libcasa-python3-4 libcasa-python3-5 libcasa-python4 libcasa-python5 libcasa-scimath-f4 libcasa-scimath-f5 libcasa-scimath4 libcasa-scimath5 libcasa-tables4 libcasa-tables5                                                                                     
+    apt-get install -y casacore-data 
+    apt-get install -y casalite
+    apt-get install -y casarest
+    apt-get install -y chgcentre
+    #apt-get install -y python3-cubical
+    apt-get install -y ddfacet
+    apt-get install -y difmap
+    apt-get install -y dp3 python-dp3
+    apt-get install -y dysco dysco-dev libdyscostman2
+    apt-get install -y python3-future-fstrings
+    apt-get install -y karma
+    apt-get install -y python-katdal python3-katdal
+    apt-get install -y python-katpoint python3-katpoint
+    apt-get install -y katversion python-katversion python3-katversion
+    apt-get install -y kittens python-astro-kittens python3-astro-kittens
+    apt-get install -y libelementresponse3 libstationresponse3 lofarbeam-dev
+    apt-get install -y losoto
+    apt-get install -y python3-lsmtool
+    apt-get install -y makems
+    apt-get install -y meqtrees python-meqtrees-cattery
+    apt-get install -y libmeqtrees-timba0 meqtrees-timba python-meqtrees-timba
+    apt-get install -y msutils python-msutils python3-msutils
+    apt-get install -y owlcat python-owlcat
+    apt-get install -y polygon2
+    apt-get install -y polygon3
+    apt-get install -y purr python-purr python3-purr
+    apt-get install -y pybdsf
+    apt-get install -y python-pyfftw python-pyfftw-doc python3-pyfftw
+    apt-get install -y pymoresane python-pymoresane
+    apt-get install -y python-slalib python3-slalib
+    apt-get install -y python-casacore python3-casacore
+    apt-get install -y python-pyxis pyxis
+    apt-get install -y python-rfimasker rfimasker
+    apt-get install -y python-rmextract python3-rmextract rmextract
+    apt-get install -y rpfits
+    apt-get install -y python3-scabha
+    apt-get install -y sched
+    apt-get install -y python-sharedarray python3-sharedarray
+    apt-get install -y python-shm
+    apt-get install -y simfast21
+    apt-get install -y python-simms python3-simms simms
+    apt-get install -y python3-spead2 spead2
+    apt-get install -y stimela python3-stimela
+    apt-get install -y python3-astro-tigger
+    apt-get install -y  python3-astro-tigger-lsm python-astro-tigger-lsm tigger-lsm
+    apt-get install -y tirific
+    apt-get install -y libtmv-symband0 libtmv0 tmv-dev
+    apt-get install -y tokenize-rt python3-tokenize-rt
+    apt-get install -y python-xmlrunner python3-xmlrunner
+    #apt-get install -y libwsclean2 wsclean wsclean-dev
+    #Kernsuite packages not included:
+    #carta carta-remote python-future-fstrings future-fstrings idg-dev idg-doc libidg libidg-api0 libidg-common0 libidg-cpu0 libidg-cuda0 libidg-external0 libidg-fft0 libidg-hybrid-cuda0 libidg-util0 libidg0 python3-idg libapplcommon3 libblob3 libcommon3 libdocker3 liblmwcommon3 liblofar-pyparameterset3 liblofar-pyparmdb3 liblofar-pytools3 libmessagebus3 libmslofar3 libparmdb3 lofar lofar-dev lofar-doc python3-lofar lsmtool python-lsmtool python-pymonetdb python3-pymonetdb python-scabha scabha singularity-container python-sourcery python-astro-tigger tigger python-tokenize-rt
+
+    apt-get install -y python3-pip libboost-all-dev wcslib-dev libcfitsio-dev cmake
+    pip3 install ipykernel
+    pip3 install presto atpy psutil katdal msutils parseltongue peasoup pyfftw pymonetdb attrdict blitz cub gsm astro-tigger astro-tigger-lsm virtualenv tensorflow
+    #pip3 install git+https://github.com/ratt-ru/CubiCal.git
+    #pip3 install git+https://github.com/ratt-ru/CubiCal.git@1.4.0
+
+    # Installation of PyBDSF
+    apt-get install -y libboost-python-dev libboost-numpy-dev python-setuptools gfortran build-essential
+    pip3 install --upgrade setuptools numpy scipy pyfits pywcs
+    cd $SOFTWARE_PATH
+    git clone https://github.com/lofar-astron/PyBDSF.git
+    cd PyB*
+    python3 setup.py install
+
+    # Montage 5.x
+    cd $SOFTWARE_PATH
+    wget -O - http://montage.ipac.caltech.edu/download/Montage_v6.0.tar.gz | tar zx
+    cd Montage
+    make
+
+    # Install latest wsclean
+    apt-get install -y libgsl-dev libhdf5-dev libfftw3-dev libboost-dev libboost-date-time-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libcfitsio-dev cmake g++ libblas-dev liblapack-dev
+    cd $SOFTWARE_PATH
+    wget -O - https://gitlab.com/aroffringa/wsclean/-/archive/v2.10/wsclean-v2.10.tar.gz | tar -xz
+    cd wsclean*
+    cd wsclean
+    mkdir -p build
+    cd build
+    cmake ../
+    make -j 4
+    make install
+
+    # Clean-up
+    apt-get clean
+    apt-get autoclean
+
+%runscript
+if [ $# -eq 0 ]; then
+	echo "The following Python modules are installed in this image:"
+        pip3 freeze
+        echo "Example usage: singularity.simg [command] [args] [options]"
+else
+        exec "$@"
+fi
